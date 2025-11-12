@@ -1,4 +1,4 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
@@ -28,83 +28,3 @@
   </script>
 </body>
 </html>
--->
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Mapa de alertas a la población - 112CV</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- Proj4 y Proj4Leaflet para EPSG:25830 -->
-  <script src="https://cdn.jsdelivr.net/npm/proj4@2.8.1/dist/proj4.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/proj4leaflet@1.0.2/src/proj4leaflet.js"></script>
-
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    // Definimos la proyección EPSG:25830 (ETRS89 / UTM zona 30N)
-    const crs25830 = new L.Proj.CRS(
-      'EPSG:25830',
-      '+proj=utm +zone=30 +ellps=GRS80 +units=m +no_defs',
-      {
-        resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16],
-        origin: [-5120900, 9998100]
-      }
-    );
-
-    // Creamos el mapa
-    const map = L.map('map', {
-      crs: crs25830,
-      center: [39.5, -0.4], // Centro aproximado de la Comunitat Valenciana
-      zoom: 7
-    });
-
-    // Capa base (OSM en proyección 3857 reproyectada automáticamente)
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Capa WMS del 112CV - Alertas a la población
-    const alertasPoblacion = L.tileLayer.wms('https://www.112cv.gva.es/geoserver/cv112/wms', {
-      layers: 'gis112cv:V_ALERTA_POBLACION',
-      format: 'image/png',
-      transparent: true,
-      version: '1.1.1',
-      opacity: 0.8,
-      attribution: '© 112 Comunitat Valenciana'
-    }).addTo(map);
-
-    // Control de capas
-    const baseMaps = {
-      "OpenStreetMap": osm
-    };
-
-    const overlayMaps = {
-      "Alertas a la población (112CV)": alertasPoblacion
-    };
-
-    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-  </script>
-</body>
-</html>
-
-
