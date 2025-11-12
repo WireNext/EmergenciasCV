@@ -54,13 +54,13 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Capas WMS del GeoServer del 112CV
+    // Servidor GeoServer 112CV
     const wmsBase = 'https://www.112cv.gva.es/geoserver/cv112/wms';
 
-    // --- Capas disponibles ---
+    // --- Capas WMS ---
     const capas = {
-      'Zonas de emergencia meteorológica': L.tileLayer.wms(wmsBase, {
-        layers: 'gis112cv:V_ZONAS_EMERGENCIA_METEO',
+      'Alerta a poblaciones': L.tileLayer.wms(wmsBase, {
+        layers: 'gis112cv:V_ALERTA_POBLACION',
         format: 'image/png',
         transparent: true,
         version: '1.1.1',
@@ -68,7 +68,15 @@
         attribution: '© 112 Comunitat Valenciana'
       }),
 
-      'Zonas de emergencia forestal': L.tileLayer.wms(wmsBase, {
+      'Zonas emergencia meteorológica': L.tileLayer.wms(wmsBase, {
+        layers: 'gis112cv:V_ZONAS_EMERGENCIA_METEO',
+        format: 'image/png',
+        transparent: true,
+        version: '1.1.1',
+        opacity: 0.8
+      }),
+
+      'Zonas emergencia forestal': L.tileLayer.wms(wmsBase, {
         layers: 'gis112cv:V_ZONAS_EMERGENCIA_FORESTAL',
         format: 'image/png',
         transparent: true,
@@ -76,7 +84,7 @@
         opacity: 0.7
       }),
 
-      'Zonas de emergencia marítima': L.tileLayer.wms(wmsBase, {
+      'Zonas emergencia marítima': L.tileLayer.wms(wmsBase, {
         layers: 'gis112cv:V_ZONAS_EMERGENCIA_MARITIMA',
         format: 'image/png',
         transparent: true,
@@ -101,11 +109,12 @@
       })
     };
 
-    // Añadir capa principal por defecto
-    capas['Zonas de emergencia meteorológica'].addTo(map);
+    // Mostrar la capa de alerta a poblaciones por defecto
+    capas['Alerta a poblaciones'].addTo(map);
 
     // Control de capas
     L.control.layers({ 'Mapa base': base }, capas, { collapsed: false }).addTo(map);
   </script>
 </body>
 </html>
+
